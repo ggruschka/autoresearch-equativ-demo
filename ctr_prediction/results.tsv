@@ -49,3 +49,4 @@ afa7943	0.1913	0.9536	discard	Weight decay 1e-5 -> 1e-6
 ae51135	0.1899	0.9542	discard	Warmup 500 -> 200 steps
 fb60c56	0.2378	0.9366	discard	Feature gating (sigmoid)
 b564144	-	-	crashed	OneCycleLR (step count mismatch)
+96f3c95	0.1900	0.9538	discard	Embedding dim 6 -> 5
