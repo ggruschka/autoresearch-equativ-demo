@@ -38,3 +38,4 @@ df4700d	0.1912	0.9536	discard	Self-attention over embeddings
 f6403b0	0.1894	0.9537	discard	BS 512 -> 1024 re-test
 ddf50e3	0.1889	0.9545	discard	Embedding dropout 0.2
 0b51552	0.1897	0.9533	discard	Hidden [96, 48]
+1ad0604	0.1911	0.9530	discard	Dropout 0.5 -> 0.4
