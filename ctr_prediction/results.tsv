@@ -25,3 +25,5 @@ dc4aaa0	0.1893	0.9538	discard	LR 3e-4 -> 4e-4
 4d5a61b	0.1899	0.9536	discard	Embedding dim 8 -> 4
 0275894	0.1896	0.9535	discard	Numerical feature transform MLP
 6ad73d4	0.1907	0.9535	discard	LR 3e-4 -> 5e-4 re-test
+d4b5552	0.1915	0.9523	baseline	Re-baseline with TIME_BUDGET=300s
+bf0221f	0.1922	0.9517	discard	Cosine schedule estimated_epochs=70
