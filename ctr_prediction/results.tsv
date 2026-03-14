@@ -32,3 +32,4 @@ ac21589	0.1910	0.9530	keep	Dropout 0.3 -> 0.5
 1a2622e	0.1904	0.9531	discard	Weight decay 1e-5 -> 1e-4 re-test
 63550f7	1.0160	0.8888	discard	DCN cross-network (2 layers)
 df4700d	0.1912	0.9536	discard	Self-attention over embeddings
+583e042	0.2201	0.9422	discard	ResNet MLP [64,64] with skip connections
