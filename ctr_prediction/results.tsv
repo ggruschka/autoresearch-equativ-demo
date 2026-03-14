@@ -36,3 +36,4 @@ df4700d	0.1912	0.9536	discard	Self-attention over embeddings
 26a438f	0.1888	0.9538	keep	LR 3e-4 -> 2e-4 (re-test 300s)
 2a759d5	0.1895	0.9540	discard	LR 2e-4 -> 1e-4
 f6403b0	0.1894	0.9537	discard	BS 512 -> 1024 re-test
+ddf50e3	0.1889	0.9545	discard	Embedding dropout 0.2
