@@ -20,3 +20,4 @@ e9614ee	0.1941	0.9515	discard	Weight decay 1e-5 -> 1e-4
 4b3f093	0.1961	0.9504	discard	Hidden [128, 64] re-test with BN
 28ff1c9	0.1936	0.9514	keep	LR warmup 500 steps
 2f39c44	0.1909	0.9528	keep	SiLU/Swish activation
+4e78a25	0.1892	0.9538	keep	Dropout 0.2 -> 0.3
