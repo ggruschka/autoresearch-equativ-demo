@@ -8,3 +8,4 @@ b26cb5b	0.2038	0.9472	keep	LR 5e-4 -> 3e-4
 6632a95	0.2008	0.9475	keep	Add BatchNorm1d
 2002a82	0.2030	0.9462	discard	GELU instead of ReLU
 ef2ed98	0.2243	0.9390	discard	Dropout 0.1 -> 0.0
+dc222c7	0.1953	0.9507	keep	Dropout 0.1 -> 0.2
