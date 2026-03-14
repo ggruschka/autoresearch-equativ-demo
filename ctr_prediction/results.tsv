@@ -3,3 +3,4 @@ f94147f	0.2605	0.9327	baseline	Baseline: EMBEDDING_DIM=8, HIDDEN=[64,32], LR=1e-
 098c231	0.3213	0.9227	discard	Larger hidden layers [128, 64]
 b933438	0.3478	0.9177	discard	Embedding dim 8 -> 16
 aa63eb3	0.2157	0.9442	keep	LR 1e-3 -> 5e-4
+b26cb5b	0.2038	0.9472	keep	LR 5e-4 -> 3e-4
