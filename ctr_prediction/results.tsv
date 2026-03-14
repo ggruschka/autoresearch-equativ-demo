@@ -5,3 +5,4 @@ b933438	0.3478	0.9177	discard	Embedding dim 8 -> 16
 aa63eb3	0.2157	0.9442	keep	LR 1e-3 -> 5e-4
 b26cb5b	0.2038	0.9472	keep	LR 5e-4 -> 3e-4
 4803f52	0.2035	0.9481	keep	BS 1024 -> 512
+6632a95	0.2008	0.9475	keep	Add BatchNorm1d
