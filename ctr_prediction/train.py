@@ -26,7 +26,7 @@ EMBEDDING_DIM = 8
 HIDDEN_DIMS = [64, 32]
 LEARNING_RATE = 3e-4
 DROPOUT = 0.1
-BATCH_SIZE = 1024
+BATCH_SIZE = 512
 WEIGHT_DECAY = 1e-5
 
 # ---------------------------------------------------------------------------
