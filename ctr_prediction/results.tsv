@@ -23,3 +23,4 @@ e9614ee	0.1941	0.9515	discard	Weight decay 1e-5 -> 1e-4
 4e78a25	0.1892	0.9538	keep	Dropout 0.2 -> 0.3
 dc4aaa0	0.1893	0.9538	discard	LR 3e-4 -> 4e-4
 4d5a61b	0.1899	0.9536	discard	Embedding dim 8 -> 4
+0275894	0.1896	0.9535	discard	Numerical feature transform MLP
