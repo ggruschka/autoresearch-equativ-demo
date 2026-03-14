@@ -31,7 +31,7 @@ from torch.utils.data import DataLoader, TensorDataset
 # ---------------------------------------------------------------------------
 
 CACHE_DIR = Path(os.path.expanduser("~/.cache/autoresearch-equativ-demo/ctr"))
-TIME_BUDGET = 120  # seconds per experiment
+TIME_BUDGET = 300  # seconds per experiment
 
 # Criteo sample: first 1M rows of Criteo Display Ad Challenge (day_0)
 # We generate synthetic data that mimics Criteo's distribution since the real
