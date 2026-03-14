@@ -100,11 +100,14 @@ def main():
     # Data
     train_loader = make_dataloader(DATASET, "train", batch_size=BATCH_SIZE, shuffle=True)
 
-    # Estimate total steps for cosine schedule
+    # Estimate total steps for cosine schedule with warmup
     steps_per_epoch = config.num_train // BATCH_SIZE
     estimated_epochs = 10  # conservative estimate for 120s budget
     total_steps = steps_per_epoch * estimated_epochs
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=total_steps, eta_min=1e-6)
+    warmup_steps = 500
+    cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=total_steps - warmup_steps, eta_min=1e-6)
+    warmup_scheduler = torch.optim.lr_scheduler.LinearLR(optimizer, start_factor=0.01, end_factor=1.0, total_iters=warmup_steps)
+    scheduler = torch.optim.lr_scheduler.SequentialLR(optimizer, schedulers=[warmup_scheduler, cosine_scheduler], milestones=[warmup_steps])
 
     # Training
     t0 = time.time()
