@@ -14,3 +14,4 @@ b337d5c	0.1943	0.9514	discard	Gradient clipping max_norm=1.0
 e9614ee	0.1941	0.9515	discard	Weight decay 1e-5 -> 1e-4
 3c44c98	0.1950	0.9505	discard	Deeper network [128, 64, 32]
 79225dd	0.1955	0.9512	discard	Label smoothing 0.01
+1845220	0.1963	0.9505	discard	BS 512 -> 256
