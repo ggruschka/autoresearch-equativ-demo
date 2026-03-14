@@ -47,3 +47,4 @@ dc45857	0.1900	0.9535	discard	LayerNorm instead of BatchNorm
 cb0558c	0.1887	0.9539	keep	Embedding dim 8 -> 6
 afa7943	0.1913	0.9536	discard	Weight decay 1e-5 -> 1e-6
 ae51135	0.1899	0.9542	discard	Warmup 500 -> 200 steps
+fb60c56	0.2378	0.9366	discard	Feature gating (sigmoid)
