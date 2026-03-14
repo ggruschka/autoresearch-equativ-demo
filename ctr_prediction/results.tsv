@@ -1,0 +1,2 @@
+commit	val_logloss	val_auc	status	description
+f94147f	0.2605	0.9327	baseline	Baseline: EMBEDDING_DIM=8, HIDDEN=[64,32], LR=1e-3, BS=1024
