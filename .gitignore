@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+dist/
+build/
+results.tsv
+run.log
+progress.png
+.ipynb_checkpoints/
+uv.lock
