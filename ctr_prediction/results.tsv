@@ -11,3 +11,4 @@ ef2ed98	0.2243	0.9390	discard	Dropout 0.1 -> 0.0
 dc222c7	0.1953	0.9507	keep	Dropout 0.1 -> 0.2
 ec8cbcd	0.1937	0.9517	keep	Cosine LR schedule
 b337d5c	0.1943	0.9514	discard	Gradient clipping max_norm=1.0
+e9614ee	0.1941	0.9515	discard	Weight decay 1e-5 -> 1e-4
