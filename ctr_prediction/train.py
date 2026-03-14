@@ -11,6 +11,8 @@ from __future__ import annotations
 import sys
 import time
 
+import math
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -98,6 +100,12 @@ def main():
     # Data
     train_loader = make_dataloader(DATASET, "train", batch_size=BATCH_SIZE, shuffle=True)
 
+    # Estimate total steps for cosine schedule
+    steps_per_epoch = config.num_train // BATCH_SIZE
+    estimated_epochs = 10  # conservative estimate for 120s budget
+    total_steps = steps_per_epoch * estimated_epochs
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=total_steps, eta_min=1e-6)
+
     # Training
     t0 = time.time()
     step = 0
@@ -125,6 +133,7 @@ def main():
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            scheduler.step()
 
             step += 1
             if step % 500 == 0:
