@@ -8,3 +8,4 @@ bf7e1e6	0.4930	0.7538	keep	Hidden [128, 64]
 5118e50	0.5410	0.7386	discard	Embedding dim 8 -> 16
 99c3300	0.4978	0.7536	discard	BS 1024 -> 512
 7ffd3c6	0.5041	0.7503	discard	SiLU instead of ReLU
+98ba05d	0.4794	0.7652	keep	Dropout 0.1 -> 0.3
