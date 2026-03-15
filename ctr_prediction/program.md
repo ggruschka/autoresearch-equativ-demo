@@ -6,6 +6,19 @@ Minimize **val_logloss** on the CTR prediction task. Secondary metric: maximize 
 
 **The goal is simple: get the lowest val_logloss.** Since the time budget is fixed, you don't need to worry about training time — it's always 300 seconds. Everything is fair game: change the architecture, the optimizer, the hyperparameters, the batch size, the model size. The only constraint is that the code runs without crashing and finishes within the time budget.
 
+## Setup
+
+To set up a new experiment, work with the user to:
+
+1. **Agree on a run tag**: propose a tag based on today's date (e.g. `mar15`). The branch `autoresearch/<tag>` must not already exist — this is a fresh run.
+2. **Create the branch**: `git checkout -b autoresearch/<tag>` from current master.
+3. **Read the in-scope files**: The repo is small. Read these files for full context:
+   - `prepare.py` — fixed constants, data prep, dataloader, evaluation. Do not modify.
+   - `train.py` — the file you modify. Model architecture, optimizer, training loop.
+4. **Verify data exists**: Check that `~/.cache/autoresearch-equativ-demo/ctr/` contains cached data. If not, run `uv run prepare.py`.
+5. **Initialize results.tsv**: Create `results.tsv` with just the header row. The baseline will be recorded after the first run.
+6. **Confirm and go**: Confirm setup looks good, then kick off the experimentation.
+
 **The first run**: Your very first run should always be to establish the baseline — run the training script as-is before making any changes.
 
 ## The Loop
