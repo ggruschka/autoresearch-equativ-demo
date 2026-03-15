@@ -12,3 +12,4 @@ bf7e1e6	0.4930	0.7538	keep	Hidden [128, 64]
 583a919	0.4747	0.7657	keep	LR 3e-4 -> 1e-4
 8ecc4d9	0.4760	0.7642	discard	Dropout 0.3 -> 0.5
 c95ea2f	0.4760	0.7634	discard	BS 1024 -> 2048
+17e2fea	0.4793	0.7653	discard	Embedding dim 8 -> 12
