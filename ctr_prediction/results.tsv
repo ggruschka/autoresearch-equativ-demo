@@ -53,3 +53,4 @@ b564144	-	-	crashed	OneCycleLR (step count mismatch)
 6eef233	0.1898	0.9539	discard	Gradient clipping max_norm=5.0
 0daa6f9	0.1923	0.9537	discard	Warm restart T_mult=3
 171cf16	0.1902	0.9536	discard	Embedding dim 6 -> 7
+c9e0f97	0.1895	0.9536	discard	LR 2e-4 -> 1.5e-4
