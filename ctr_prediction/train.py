@@ -48,6 +48,9 @@ class CTRModel(nn.Module):
         # Input = numerical + embeddings + pairwise FM interaction
         input_dim = config.num_numerical + config.num_categorical * EMBEDDING_DIM + EMBEDDING_DIM
 
+        # Input batch norm for feature scaling
+        self.input_bn = nn.BatchNorm1d(input_dim)
+
         # MLP layers
         layers = []
         prev_dim = input_dim
@@ -73,6 +76,7 @@ class CTRModel(nn.Module):
         fm_inter = 0.5 * (sum_emb ** 2 - sq_sum)  # (batch, emb_dim)
 
         x = torch.cat([numerical, embedded, fm_inter], dim=-1)
+        x = self.input_bn(x)
         return self.mlp(x)
 
 
