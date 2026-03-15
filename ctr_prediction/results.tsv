@@ -25,3 +25,4 @@ ef66b4d	0.4792	0.7592	0.1	discard	LR 7e-5 -> 6e-5
 5b9d0be	0.4782	0.7601	0.1	discard	SE block on embeddings
 b84dbb2	0.5015	0.7339	0.1	discard	Adagrad optimizer
 54b7ec5	0.4782	0.7595	0.1	discard	Hidden [160, 80]
+abfe3b0	0.4744	0.7651	0.1	discard	Mish activation
