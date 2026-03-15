@@ -24,7 +24,7 @@ from prepare import load_config, make_dataloader, evaluate, TIME_BUDGET
 DATASET = "criteo"
 EMBEDDING_DIM = 8
 HIDDEN_DIMS = [128, 64]
-LEARNING_RATE = 3e-4
+LEARNING_RATE = 1e-4
 DROPOUT = 0.3
 BATCH_SIZE = 1024
 WEIGHT_DECAY = 1e-5
