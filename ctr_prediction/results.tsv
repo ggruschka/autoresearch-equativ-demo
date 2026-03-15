@@ -1,30 +1,30 @@
-commit	val_logloss	val_auc	status	description
-4e3d5cf	0.7433	0.7096	baseline	Baseline: EMB=8, HIDDEN=[64,32], LR=1e-3, BS=1024, real Criteo
-3f6dffc	0.5010	0.7553	keep	LR 1e-3 -> 3e-4
-a0d5062	0.4986	0.7518	keep	Add BatchNorm1d
-b33a9d9	0.5116	0.7452	discard	Hidden [256, 128]
-bf7e1e6	0.4930	0.7538	keep	Hidden [128, 64]
-777c984	0.5066	0.7506	discard	Hidden [128, 64, 32]
-5118e50	0.5410	0.7386	discard	Embedding dim 8 -> 16
-99c3300	0.4978	0.7536	discard	BS 1024 -> 512
-7ffd3c6	0.5041	0.7503	discard	SiLU instead of ReLU
-98ba05d	0.4794	0.7652	keep	Dropout 0.1 -> 0.3
-583a919	0.4747	0.7657	keep	LR 3e-4 -> 1e-4
-8ecc4d9	0.4760	0.7642	discard	Dropout 0.3 -> 0.5
-c95ea2f	0.4760	0.7634	discard	BS 1024 -> 2048
-17e2fea	0.4793	0.7653	discard	Embedding dim 8 -> 12
-3fdaf37	0.4732	0.7672	keep	Weight decay 1e-5 -> 1e-4
-8071f8d	0.4763	0.7630	discard	Cosine LR with warm restarts
-e65c0ab	0.4741	0.7663	discard	Hidden [192, 96]
-496d9e1	0.4754	0.7638	discard	FM second-order interactions
-39856ab	0.4736	0.7671	discard	Dropout 0.3 -> 0.2
-2ed6159	0.4782	0.7624	discard	LR 1e-4 -> 5e-5
-9c568e8	0.4726	0.7678	keep	Gradient clipping max_norm=1.0
-fbbb39a	0.4722	0.7684	keep	Embedding dim 8 -> 10
-cbdba09	0.4723	0.7680	discard	Hidden [128, 128]
-9b13623	0.4752	0.7676	discard	LR 1e-4 -> 2e-4 with grad clip
-6aed8fb	0.4730	0.7678	discard	Weight decay 1e-4 -> 3e-4
-12c3e7c	0.4790	0.7669	discard	GELU activation
-14856d6	0.4776	0.7615	discard	BS 1024 -> 4096
-01143cc	0.4726	0.7693	discard	Label smoothing 0.05
-e1e35c1	0.4724	0.7684	discard	Self-attention over embeddings (2 heads)
+commit	val_logloss	val_auc	memory_gb	status	description
+4e3d5cf	0.7433	0.7096	-	baseline	Baseline: EMB=8, HIDDEN=[64,32], LR=1e-3, BS=1024, real Criteo
+3f6dffc	0.5010	0.7553	-	keep	LR 1e-3 -> 3e-4
+a0d5062	0.4986	0.7518	-	keep	Add BatchNorm1d
+b33a9d9	0.5116	0.7452	-	discard	Hidden [256, 128]
+bf7e1e6	0.4930	0.7538	-	keep	Hidden [128, 64]
+777c984	0.5066	0.7506	-	discard	Hidden [128, 64, 32]
+5118e50	0.5410	0.7386	-	discard	Embedding dim 8 -> 16
+99c3300	0.4978	0.7536	-	discard	BS 1024 -> 512
+7ffd3c6	0.5041	0.7503	-	discard	SiLU instead of ReLU
+98ba05d	0.4794	0.7652	-	keep	Dropout 0.1 -> 0.3
+583a919	0.4747	0.7657	-	keep	LR 3e-4 -> 1e-4
+8ecc4d9	0.4760	0.7642	-	discard	Dropout 0.3 -> 0.5
+c95ea2f	0.4760	0.7634	-	discard	BS 1024 -> 2048
+17e2fea	0.4793	0.7653	-	discard	Embedding dim 8 -> 12
+3fdaf37	0.4732	0.7672	-	keep	Weight decay 1e-5 -> 1e-4
+8071f8d	0.4763	0.7630	-	discard	Cosine LR with warm restarts
+e65c0ab	0.4741	0.7663	-	discard	Hidden [192, 96]
+496d9e1	0.4754	0.7638	-	discard	FM second-order interactions
+39856ab	0.4736	0.7671	-	discard	Dropout 0.3 -> 0.2
+2ed6159	0.4782	0.7624	-	discard	LR 1e-4 -> 5e-5
+9c568e8	0.4726	0.7678	-	keep	Gradient clipping max_norm=1.0
+fbbb39a	0.4722	0.7684	-	keep	Embedding dim 8 -> 10
+cbdba09	0.4723	0.7680	-	discard	Hidden [128, 128]
+9b13623	0.4752	0.7676	-	discard	LR 1e-4 -> 2e-4 with grad clip
+6aed8fb	0.4730	0.7678	-	discard	Weight decay 1e-4 -> 3e-4
+12c3e7c	0.4790	0.7669	-	discard	GELU activation
+14856d6	0.4776	0.7615	-	discard	BS 1024 -> 4096
+01143cc	0.4726	0.7693	-	discard	Label smoothing 0.05
+e1e35c1	0.4724	0.7684	-	discard	Self-attention over embeddings (2 heads)
