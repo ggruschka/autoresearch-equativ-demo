@@ -97,6 +97,19 @@ def main():
     # Data
     train_loader = make_dataloader(DATASET, "train", batch_size=BATCH_SIZE, shuffle=True)
 
+    # LR schedule: linear warmup + cosine decay
+    steps_per_epoch = config.num_train // BATCH_SIZE
+    total_steps_est = steps_per_epoch * 9  # ~9 epochs in 300s
+    warmup_steps = 500
+
+    def lr_lambda(step):
+        if step < warmup_steps:
+            return step / warmup_steps
+        progress = (step - warmup_steps) / max(1, total_steps_est - warmup_steps)
+        return 0.5 * (1.0 + __import__('math').cos(__import__('math').pi * min(progress, 1.0)))
+
+    scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
+
     # Training
     t0 = time.time()
     step = 0
@@ -123,7 +136,9 @@ def main():
 
             optimizer.zero_grad()
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             optimizer.step()
+            scheduler.step()
 
             step += 1
             if step % 500 == 0:
