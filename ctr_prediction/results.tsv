@@ -11,3 +11,4 @@ c079601	0.4744	0.7654	0.1	keep	Input BatchNorm for feature scaling
 b3e2cc3	0.4742	0.7659	0.1	keep	LR 1e-4 -> 7e-5
 15a2384	0.4740	0.7657	0.1	keep	WD 1e-4 -> 5e-5
 17310d4	0.4766	0.7620	0.1	discard	Dropout 0.3 -> 0.25
+c7a553f	0.4769	0.7618	0.1	discard	Emb 10 -> 12
