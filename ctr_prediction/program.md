@@ -4,6 +4,8 @@
 
 Minimize **val_logloss** on the CTR prediction task. Secondary metric: maximize **val_auc**.
 
+**The goal is simple: get the lowest val_logloss.** Since the time budget is fixed, you don't need to worry about training time — it's always 300 seconds. Everything is fair game: change the architecture, the optimizer, the hyperparameters, the batch size, the model size. The only constraint is that the code runs without crashing and finishes within the time budget.
+
 ## The Loop
 
 1. Read `train.py` and understand the current state
