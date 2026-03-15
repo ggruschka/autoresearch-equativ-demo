@@ -82,12 +82,27 @@ class CTRModel(nn.Module):
         ]
         cat_embedded = torch.cat(cat_embedded, dim=-1)
 
-        # Bin and embed numerical features
+        # Piecewise linear embedding of numerical features
         bin_indices = torch.bucketize(numerical, self.bin_boundaries)  # (batch, 13)
-        num_embedded = [
-            self.num_embeddings[i](bin_indices[:, i])
-            for i in range(self.num_numerical)
-        ]
+        # Clamp to valid range for interpolation
+        bin_lo = bin_indices.clamp(max=NUM_BINS - 2)
+        bin_hi = bin_lo + 1
+        # Compute interpolation weight within each bin
+        all_bounds = torch.cat([
+            torch.tensor([-1e6], device=numerical.device),
+            self.bin_boundaries,
+            torch.tensor([1e6], device=numerical.device),
+        ])
+        lo_val = all_bounds[bin_lo]  # (batch, 13)
+        hi_val = all_bounds[bin_hi]  # (batch, 13)
+        weight = ((numerical - lo_val) / (hi_val - lo_val + 1e-8)).clamp(0, 1)  # (batch, 13)
+
+        num_embedded = []
+        for i in range(self.num_numerical):
+            emb_lo = self.num_embeddings[i](bin_lo[:, i])  # (batch, emb_dim)
+            emb_hi = self.num_embeddings[i](bin_hi[:, i])  # (batch, emb_dim)
+            w = weight[:, i:i+1]  # (batch, 1)
+            num_embedded.append((1 - w) * emb_lo + w * emb_hi)
         num_embedded = torch.cat(num_embedded, dim=-1)
 
         # Concatenate: raw numerical + cat embeddings + num embeddings
