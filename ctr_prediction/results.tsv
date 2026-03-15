@@ -12,3 +12,5 @@ a46bd62	0.4734	0.7747	1.3	discard	GPU-preload - 22 epochs causes overfitting
 5384ffb	0.4564	0.7868	0.1	keep	embed binned numerical features (32 bins)
 a9d3db3	0.4564	0.7865	0.1	discard	LR 7e-4 with bins - same
 7eb62cb	0.4544	0.7887	0.1	keep	piecewise linear interpolation for numerical bins
+f86a1fa	0.4547	0.7886	0.1	discard	no grad clipping - slight regression
+0e7cb27	0.4543	0.7889	0.1	keep	quantile-based bin boundaries
