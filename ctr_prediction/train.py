@@ -30,7 +30,7 @@ LEARNING_RATE = 9e-4
 DROPOUT = 0.2
 BATCH_SIZE = 1024
 WEIGHT_DECAY = 1e-4
-NUM_BINS = 32  # bins for numerical feature embedding
+NUM_BINS = 48  # bins for numerical feature embedding
 
 # ---------------------------------------------------------------------------
 # Model
