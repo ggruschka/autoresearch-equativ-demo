@@ -15,3 +15,5 @@ a9d3db3	0.4564	0.7865	0.1	discard	LR 7e-4 with bins - same
 f86a1fa	0.4547	0.7886	0.1	discard	no grad clipping - slight regression
 0e7cb27	0.4543	0.7889	0.1	keep	quantile-based bin boundaries
 0f80f23	0.4537	0.7896	0.1	keep	48 quantile bins
+08f79e3	0.4544	0.7888	0.1	discard	bs=2048 - fewer updates
+2c1b8d4	0.4528	0.7903	0.1	keep	add embedding dropout 0.1
