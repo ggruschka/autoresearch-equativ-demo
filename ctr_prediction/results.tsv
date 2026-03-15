@@ -3,3 +3,4 @@ commit	val_logloss	val_auc	status	description
 3f6dffc	0.5010	0.7553	keep	LR 1e-3 -> 3e-4
 a0d5062	0.4986	0.7518	keep	Add BatchNorm1d
 b33a9d9	0.5116	0.7452	discard	Hidden [256, 128]
+bf7e1e6	0.4930	0.7538	keep	Hidden [128, 64]
