@@ -22,12 +22,12 @@ from prepare import load_config, make_dataloader, evaluate, TIME_BUDGET
 # ---------------------------------------------------------------------------
 
 DATASET = "criteo"
-EMBEDDING_DIM = 8
-HIDDEN_DIMS = [64, 32]
-LEARNING_RATE = 1e-3
-DROPOUT = 0.1
+EMBEDDING_DIM = 16
+HIDDEN_DIMS = [128, 64]
+LEARNING_RATE = 5e-4
+DROPOUT = 0.2
 BATCH_SIZE = 1024
-WEIGHT_DECAY = 1e-5
+WEIGHT_DECAY = 1e-4
 
 # ---------------------------------------------------------------------------
 # Model
