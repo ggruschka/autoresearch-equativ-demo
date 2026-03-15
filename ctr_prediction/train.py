@@ -53,6 +53,7 @@ class CTRModel(nn.Module):
         prev_dim = input_dim
         for hidden_dim in HIDDEN_DIMS:
             layers.append(nn.Linear(prev_dim, hidden_dim))
+            layers.append(nn.BatchNorm1d(hidden_dim))
             layers.append(nn.ReLU())
             layers.append(nn.Dropout(DROPOUT))
             prev_dim = hidden_dim
