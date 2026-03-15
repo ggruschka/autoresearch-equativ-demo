@@ -45,6 +45,8 @@ class CTRModel(nn.Module):
             for cardinality in config.categorical_cardinalities
         ])
 
+        self.emb_dropout = nn.Dropout(0.15)
+
         # Input = numerical + embeddings + pairwise FM interaction
         input_dim = config.num_numerical + config.num_categorical * EMBEDDING_DIM + EMBEDDING_DIM
 
@@ -67,7 +69,7 @@ class CTRModel(nn.Module):
     def forward(self, numerical: torch.Tensor, categorical: torch.Tensor) -> torch.Tensor:
         # Embed each categorical feature
         emb_list = [emb(categorical[:, i]) for i, emb in enumerate(self.embeddings)]
-        embedded = torch.cat(emb_list, dim=-1)
+        embedded = self.emb_dropout(torch.cat(emb_list, dim=-1))
 
         # FM pairwise interaction (efficient sum-of-squares trick)
         emb_stack = torch.stack(emb_list, dim=1)  # (batch, num_cat, emb_dim)
