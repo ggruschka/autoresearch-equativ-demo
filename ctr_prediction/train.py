@@ -100,7 +100,7 @@ def main():
     print(f"Parameters: {num_params:,}")
 
     # Optimizer
-    optimizer = torch.optim.AdamW(model.parameters(), lr=LEARNING_RATE, weight_decay=WEIGHT_DECAY)
+    optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE, weight_decay=WEIGHT_DECAY)
 
     # Data
     train_loader = make_dataloader(DATASET, "train", batch_size=BATCH_SIZE, shuffle=True)
