@@ -11,8 +11,6 @@ from __future__ import annotations
 import sys
 import time
 
-import math
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -24,11 +22,11 @@ from prepare import load_config, make_dataloader, evaluate, TIME_BUDGET
 # ---------------------------------------------------------------------------
 
 DATASET = "criteo"
-EMBEDDING_DIM = 6
+EMBEDDING_DIM = 8
 HIDDEN_DIMS = [64, 32]
-LEARNING_RATE = 2e-4
-DROPOUT = 0.5
-BATCH_SIZE = 512
+LEARNING_RATE = 1e-3
+DROPOUT = 0.1
+BATCH_SIZE = 1024
 WEIGHT_DECAY = 1e-5
 
 # ---------------------------------------------------------------------------
@@ -55,8 +53,7 @@ class CTRModel(nn.Module):
         prev_dim = input_dim
         for hidden_dim in HIDDEN_DIMS:
             layers.append(nn.Linear(prev_dim, hidden_dim))
-            layers.append(nn.BatchNorm1d(hidden_dim))
-            layers.append(nn.SiLU())
+            layers.append(nn.ReLU())
             layers.append(nn.Dropout(DROPOUT))
             prev_dim = hidden_dim
         layers.append(nn.Linear(prev_dim, 1))
@@ -100,14 +97,6 @@ def main():
     # Data
     train_loader = make_dataloader(DATASET, "train", batch_size=BATCH_SIZE, shuffle=True)
 
-    # Cosine with warm restarts — multiple cycles over training
-    steps_per_epoch = config.num_train // BATCH_SIZE
-    T_0 = steps_per_epoch * 10  # first cycle = 10 epochs, then doubles
-    warmup_steps = 500
-    cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=T_0, T_mult=2, eta_min=1e-6)
-    warmup_scheduler = torch.optim.lr_scheduler.LinearLR(optimizer, start_factor=0.01, end_factor=1.0, total_iters=warmup_steps)
-    scheduler = torch.optim.lr_scheduler.SequentialLR(optimizer, schedulers=[warmup_scheduler, cosine_scheduler], milestones=[warmup_steps])
-
     # Training
     t0 = time.time()
     step = 0
@@ -135,7 +124,6 @@ def main():
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            scheduler.step()
 
             step += 1
             if step % 500 == 0:

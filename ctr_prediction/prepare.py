@@ -3,24 +3,20 @@ CTR Prediction — Data Preparation & Evaluation Harness
 =======================================================
 DO NOT MODIFY THIS FILE. The agent modifies train.py only.
 
-Downloads Criteo or Avazu sample data, preprocesses features, provides
-dataloaders and evaluation utilities for train.py to consume.
+Loads the real Criteo Display Advertising Challenge dataset, preprocesses
+features, provides dataloaders and evaluation utilities for train.py to consume.
 
 Usage:
-    uv run prepare.py                  # Download default (criteo)
+    uv run prepare.py                  # Prepare default (criteo)
     uv run prepare.py --dataset criteo
-    uv run prepare.py --dataset avazu
 """
 from __future__ import annotations
 
 import argparse
-import hashlib
 import os
-import struct
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator
 
 import numpy as np
 import torch
@@ -31,25 +27,17 @@ from torch.utils.data import DataLoader, TensorDataset
 # ---------------------------------------------------------------------------
 
 CACHE_DIR = Path(os.path.expanduser("~/.cache/autoresearch-equativ-demo/ctr"))
+RAW_DIR = CACHE_DIR / "criteo-raw"
 TIME_BUDGET = 300  # seconds per experiment
 
-# Criteo sample: first 1M rows of Criteo Display Ad Challenge (day_0)
-# We generate synthetic data that mimics Criteo's distribution since the real
-# dataset requires Kaggle authentication.
-NUM_ROWS = 500_000
+# Use first 1M rows of the real Criteo dataset
+NUM_ROWS = 1_000_000
 VAL_FRACTION = 0.2
 
-# Feature spec for synthetic Criteo-like data
 NUM_NUMERICAL = 13
 NUM_CATEGORICAL = 26
-CATEGORICAL_CARDINALITIES = [
-    # Approximations of Criteo cardinalities, capped for embedding sanity
-    1000, 500, 200_000, 50_000, 300, 20, 12_000, 600, 4, 50_000,
-    8_000, 200_000, 30, 6_000, 100, 80_000, 50, 100, 40_000, 5,
-    100_000, 20, 15, 200_000, 100, 50,
-]
-# Cap all cardinalities for hashing
-HASH_BINS = [min(c, 10_000) for c in CATEGORICAL_CARDINALITIES]
+# Hash all categorical features to at most this many bins
+HASH_BINS_CAP = 10_000
 
 
 @dataclass
@@ -64,79 +52,66 @@ class DatasetConfig:
 
 
 # ---------------------------------------------------------------------------
-# Synthetic data generation (deterministic, mimics Criteo distribution)
+# Real Criteo data loading
 # ---------------------------------------------------------------------------
 
-def _generate_criteo_like(n: int, seed: int = 42) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Generate synthetic CTR data mimicking Criteo distribution.
+def _load_criteo_raw(n: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Load first n rows of the real Criteo DAC train.txt.
 
-    Returns (numerical_features, categorical_features, labels).
+    Format: <label>\t<int1>\t...\t<int13>\t<cat1>\t...\t<cat26>
+    Missing values are empty strings.
+
+    Returns (numerical, categorical, labels).
     """
-    rng = np.random.RandomState(seed)
+    raw_path = RAW_DIR / "train.txt"
+    if not raw_path.exists():
+        raise RuntimeError(
+            f"Criteo dataset not found at {raw_path}. "
+            f"Please extract kaggle-display-advertising-challenge-dataset.tar.gz "
+            f"into {RAW_DIR}/"
+        )
 
-    # Numerical features: mix of count-like and normalized features
+    print(f"Loading {n:,} rows from {raw_path}...")
+
+    labels = np.zeros(n, dtype=np.float32)
     numerical = np.zeros((n, NUM_NUMERICAL), dtype=np.float32)
-    for i in range(NUM_NUMERICAL):
-        if i < 5:
-            # Count features (log-normal)
-            numerical[:, i] = rng.lognormal(mean=1.0, sigma=2.0, size=n).clip(0, 1000)
-        else:
-            # Normalized features
-            numerical[:, i] = rng.randn(n).astype(np.float32)
-
-    # Categorical features
     categorical = np.zeros((n, NUM_CATEGORICAL), dtype=np.int64)
-    for i in range(NUM_CATEGORICAL):
-        # Zipf-like distribution (some values much more common)
-        bins = HASH_BINS[i]
-        categorical[:, i] = (rng.zipf(1.5, size=n) % bins).astype(np.int64)
 
-    # Labels: ~3.4% CTR (realistic for display ads)
-    # Create a signal from features so the problem is learnable
-    weights_num = rng.randn(NUM_NUMERICAL).astype(np.float32) * 0.1
-    logits = numerical @ weights_num
+    with open(raw_path, 'r') as f:
+        for i in range(n):
+            line = f.readline()
+            if not line:
+                print(f"  Warning: only {i} rows available")
+                labels = labels[:i]
+                numerical = numerical[:i]
+                categorical = categorical[:i]
+                break
 
-    # Add categorical signal via simple hash trick
-    for i in range(min(10, NUM_CATEGORICAL)):  # first 10 categoricals are informative
-        cat_weights = rng.randn(HASH_BINS[i]).astype(np.float32) * 0.3
-        logits += cat_weights[categorical[:, i]]
+            parts = line.rstrip('\n').split('\t')
+            # Label
+            labels[i] = float(parts[0])
 
-    # Shift to get ~3.4% CTR
-    logits -= 3.3
-    probs = 1.0 / (1.0 + np.exp(-logits))
-    labels = (rng.rand(n) < probs).astype(np.float32)
+            # 13 integer (numerical) features — columns 1-13
+            for j in range(NUM_NUMERICAL):
+                val = parts[1 + j]
+                if val == '':
+                    numerical[i, j] = np.nan
+                else:
+                    numerical[i, j] = float(val)
 
-    print(f"  CTR rate: {labels.mean():.4f} ({labels.sum():.0f}/{n})")
-    return numerical, categorical, labels
+            # 26 categorical features — columns 14-39
+            # Hash hex strings to integer indices
+            for j in range(NUM_CATEGORICAL):
+                val = parts[14 + j]
+                if val == '':
+                    categorical[i, j] = 0  # missing → index 0
+                else:
+                    categorical[i, j] = (int(val, 16) % (HASH_BINS_CAP - 1)) + 1
 
+            if (i + 1) % 200_000 == 0:
+                print(f"  Loaded {i + 1:,} rows...")
 
-def _generate_avazu_like(n: int, seed: int = 123) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Generate synthetic Avazu-like data (mobile-focused, different distribution)."""
-    rng = np.random.RandomState(seed)
-
-    # Avazu has fewer numerical features, more categorical
-    num_feats = 6
-    cat_feats = 20
-    cat_bins = [24, 7, 500, 300, 5000, 8000, 50, 100, 3000, 200,
-                400, 50, 20, 10, 100, 1000, 500, 200, 50, 10]
-
-    numerical = rng.randn(n, num_feats).astype(np.float32)
-    categorical = np.zeros((n, cat_feats), dtype=np.int64)
-    for i in range(cat_feats):
-        categorical[:, i] = (rng.zipf(1.3, size=n) % cat_bins[i]).astype(np.int64)
-
-    # ~17% CTR (mobile ads have higher CTR)
-    weights = rng.randn(num_feats).astype(np.float32) * 0.15
-    logits = numerical @ weights
-    for i in range(min(8, cat_feats)):
-        cat_w = rng.randn(cat_bins[i]).astype(np.float32) * 0.25
-        logits += cat_w[categorical[:, i]]
-    logits -= 1.5
-    probs = 1.0 / (1.0 + np.exp(-logits))
-    labels = (rng.rand(n) < probs).astype(np.float32)
-
-    print(f"  CTR rate: {labels.mean():.4f} ({labels.sum():.0f}/{n})")
-
+    print(f"  CTR rate: {labels.mean():.4f} ({labels.sum():.0f}/{len(labels)})")
     return numerical, categorical, labels
 
 
@@ -183,7 +158,7 @@ def _is_cached(dataset: str) -> bool:
 # ---------------------------------------------------------------------------
 
 def prepare(dataset: str = "criteo") -> DatasetConfig:
-    """Download/generate and preprocess dataset. Returns config."""
+    """Load and preprocess dataset. Returns config."""
     cache = _cache_path(dataset)
 
     if _is_cached(dataset):
@@ -191,15 +166,11 @@ def prepare(dataset: str = "criteo") -> DatasetConfig:
         config_data = np.load(cache / "config.npy", allow_pickle=True).item()
         return DatasetConfig(**config_data)
 
-    print(f"Generating synthetic '{dataset}' data...")
+    print(f"Preparing real '{dataset}' data...")
 
     if dataset == "criteo":
-        numerical, categorical, labels = _generate_criteo_like(NUM_ROWS)
-        cat_cardinalities = HASH_BINS
-    elif dataset == "avazu":
-        numerical, categorical, labels = _generate_avazu_like(NUM_ROWS)
-        cat_cardinalities = [24, 7, 500, 300, 5000, 8000, 50, 100, 3000, 200,
-                             400, 50, 20, 10, 100, 1000, 500, 200, 50, 10]
+        numerical, categorical, labels = _load_criteo_raw(NUM_ROWS)
+        cat_cardinalities = [HASH_BINS_CAP] * NUM_CATEGORICAL
     else:
         raise ValueError(f"Unknown dataset: {dataset}")
 
@@ -295,7 +266,7 @@ def evaluate(model: torch.nn.Module, dataset: str = "criteo",
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Prepare CTR dataset")
-    parser.add_argument("--dataset", default="criteo", choices=["criteo", "avazu"])
+    parser.add_argument("--dataset", default="criteo", choices=["criteo"])
     args = parser.parse_args()
 
     config = prepare(args.dataset)
