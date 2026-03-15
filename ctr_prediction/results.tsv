@@ -10,3 +10,4 @@ e5b1a6c	0.4759	0.7641	0.1	discard	Deeper [128,64,32] with FM
 c079601	0.4744	0.7654	0.1	keep	Input BatchNorm for feature scaling
 b3e2cc3	0.4742	0.7659	0.1	keep	LR 1e-4 -> 7e-5
 15a2384	0.4740	0.7657	0.1	keep	WD 1e-4 -> 5e-5
+17310d4	0.4766	0.7620	0.1	discard	Dropout 0.3 -> 0.25
