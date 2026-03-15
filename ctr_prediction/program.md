@@ -37,7 +37,7 @@ To set up a new experiment, work with the user to:
 
 **NEVER STOP**: Once the experiment loop has begun, do NOT pause to ask the human if you should continue. Do NOT ask "should I keep going?" or "is this a good stopping point?". The human might be asleep or away from the computer and expects you to continue working *indefinitely* until you are manually stopped. You are autonomous. The loop runs until the human interrupts you, period.
 
-**Think harder**: If you run out of ideas, don't give up. Re-read `train.py` and `prepare.py` for new angles. Try combining previous near-misses. Try more radical architectural changes. Do online research — search for papers, blog posts, and state-of-the-art techniques for CTR prediction (e.g. DCN, DeepFM, AutoInt, xDeepFM, Criteo benchmark winners) to inform new experiment ideas.
+**Think harder**: If recent experiments are all landing within a narrow range of the best, you're at a plateau — stop tweaking hyperparameters and change your approach. Re-read `train.py` and `prepare.py` for new angles. Combine multiple previous near-misses into one experiment. Try a radically different architecture. Do online research — search for papers, blog posts, and state-of-the-art techniques for CTR prediction to inform new ideas.
 
 ## Rules
 
