@@ -27,7 +27,7 @@ HIDDEN_DIMS = [128, 64]
 LEARNING_RATE = 7e-5
 DROPOUT = 0.3
 BATCH_SIZE = 1024
-WEIGHT_DECAY = 1e-4
+WEIGHT_DECAY = 5e-5
 
 # ---------------------------------------------------------------------------
 # Model
