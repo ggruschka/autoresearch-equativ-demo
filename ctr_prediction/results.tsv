@@ -10,3 +10,4 @@ bf7e1e6	0.4930	0.7538	keep	Hidden [128, 64]
 7ffd3c6	0.5041	0.7503	discard	SiLU instead of ReLU
 98ba05d	0.4794	0.7652	keep	Dropout 0.1 -> 0.3
 583a919	0.4747	0.7657	keep	LR 3e-4 -> 1e-4
+8ecc4d9	0.4760	0.7642	discard	Dropout 0.3 -> 0.5
