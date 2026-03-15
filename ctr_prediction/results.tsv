@@ -8,3 +8,5 @@ d281258	0.6132	0.7242	0.1	discard	DCN-v2 cross+deep emb16 - massive overfitting
 59cdfd5	0.4619	0.7790	0.1	discard	LR 3e-4 - too slow
 30387de	0.4591	0.7833	0.1	keep	LR 5e-4 -> 7e-4
 798b7ca	0.4590	0.7838	0.1	keep	LR 7e-4 -> 9e-4
+a46bd62	0.4734	0.7747	1.3	discard	GPU-preload - 22 epochs causes overfitting
+5384ffb	0.4564	0.7868	0.1	keep	embed binned numerical features (32 bins)
