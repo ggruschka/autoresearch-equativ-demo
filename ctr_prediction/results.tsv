@@ -24,3 +24,4 @@ fbbb39a	0.4722	0.7684	keep	Embedding dim 8 -> 10
 cbdba09	0.4723	0.7680	discard	Hidden [128, 128]
 9b13623	0.4752	0.7676	discard	LR 1e-4 -> 2e-4 with grad clip
 6aed8fb	0.4730	0.7678	discard	Weight decay 1e-4 -> 3e-4
+12c3e7c	0.4790	0.7669	discard	GELU activation
