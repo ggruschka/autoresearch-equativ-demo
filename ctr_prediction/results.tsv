@@ -18,3 +18,4 @@ aab82f6	0.4774	0.7616	0.1	discard	PReLU instead of ReLU
 4ef63be	0.4739	0.7667	0.1	keep	Embedding dropout 0.15
 7379466	0.4774	0.7615	0.1	discard	Bilinear num x cat interaction
 1587b2d	0.4774	0.7611	0.1	discard	Remove FM interaction (simplification test - FM helps)
+fffa8e3	0.4794	0.7582	0.1	discard	LR 7e-5 -> 8e-5
