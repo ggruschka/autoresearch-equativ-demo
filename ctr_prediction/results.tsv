@@ -32,3 +32,4 @@ c88e129	0.4788	0.7621	0.1	discard	Remove input BN + grad clip (both load-bearing
 50dd1b9	0.4738	0.7673	0.1	keep	Emb 10 -> 9 (fewer params, same quality)
 900fb0d	0.4794	0.7586	0.1	discard	WD 5e-5 -> 3e-5
 81ef37e	0.4782	0.7600	0.1	discard	Emb dropout 0.15 -> 0.1
+d8cd97c	0.4745	0.7671	0.1	discard	Log1p transform on numericals
