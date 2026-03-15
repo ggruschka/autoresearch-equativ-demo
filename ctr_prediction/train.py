@@ -141,12 +141,19 @@ def main():
     eval_time = time.time() - eval_start
     total_time = time.time() - t0
 
+    # Peak VRAM
+    if torch.cuda.is_available():
+        peak_vram_mb = torch.cuda.max_memory_allocated() / 1024 / 1024
+    else:
+        peak_vram_mb = 0.0
+
     # Print results in standard format
     print(f"\n---")
     print(f"val_logloss:      {metrics['val_logloss']:.4f}")
     print(f"val_auc:          {metrics['val_auc']:.4f}")
     print(f"training_seconds: {training_time:.1f}")
     print(f"total_seconds:    {total_time:.1f}")
+    print(f"peak_vram_mb:     {peak_vram_mb:.1f}")
     print(f"num_params:       {num_params}")
     print(f"num_steps:        {step}")
     print(f"dataset:          {DATASET}")
