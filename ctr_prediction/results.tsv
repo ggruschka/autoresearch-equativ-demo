@@ -27,3 +27,4 @@ cbdba09	0.4723	0.7680	discard	Hidden [128, 128]
 12c3e7c	0.4790	0.7669	discard	GELU activation
 14856d6	0.4776	0.7615	discard	BS 1024 -> 4096
 01143cc	0.4726	0.7693	discard	Label smoothing 0.05
+e1e35c1	0.4724	0.7684	discard	Self-attention over embeddings (2 heads)
