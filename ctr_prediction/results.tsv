@@ -20,3 +20,4 @@ e65c0ab	0.4741	0.7663	discard	Hidden [192, 96]
 39856ab	0.4736	0.7671	discard	Dropout 0.3 -> 0.2
 2ed6159	0.4782	0.7624	discard	LR 1e-4 -> 5e-5
 9c568e8	0.4726	0.7678	keep	Gradient clipping max_norm=1.0
+fbbb39a	0.4722	0.7684	keep	Embedding dim 8 -> 10
