@@ -29,3 +29,4 @@ abfe3b0	0.4744	0.7651	0.1	discard	Mish activation
 c88e129	0.4788	0.7621	0.1	discard	Remove input BN + grad clip (both load-bearing)
 2dbe816	0.4770	0.7619	0.1	discard	BS=768
 6831ddf	0.4779	0.7608	0.1	discard	Per-layer dropout [0.4, 0.2]
+50dd1b9	0.4738	0.7673	0.1	keep	Emb 10 -> 9 (fewer params, same quality)
