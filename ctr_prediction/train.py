@@ -50,8 +50,11 @@ class CTRModel(nn.Module):
 
         # Numerical feature binning: embed binned numerical features
         self.num_numerical = config.num_numerical
-        # Bin boundaries: evenly spaced in [-4, 4] for z-scored data
-        boundaries = torch.linspace(-4, 4, NUM_BINS - 1)
+        # Bin boundaries: quantile-based for N(0,1) z-scored data
+        # More bins in the dense center, fewer in tails
+        quantiles = torch.linspace(0, 1, NUM_BINS + 1)[1:-1]  # exclude 0 and 1
+        # Approximate N(0,1) quantile via probit: sqrt(2) * erfinv(2*q - 1)
+        boundaries = math.sqrt(2) * torch.erfinv(2 * quantiles - 1)
         self.register_buffer('bin_boundaries', boundaries)
         # One embedding per numerical feature
         self.num_embeddings = nn.ModuleList([
