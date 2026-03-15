@@ -30,6 +30,8 @@ Minimize **val_logloss** on the CTR prediction task. Secondary metric: maximize 
 - **Cannot add dependencies**. Only use what's in pyproject.toml.
 - **TIME_BUDGET is 300 seconds**. Do not change it. Kill runs exceeding 10 minutes.
 - **Log everything** to `results.tsv` (tab-separated: commit, val_logloss, val_auc, status, description).
+- **Memory**: Some VRAM increase is acceptable for meaningful val_logloss gains, but it should not blow up dramatically. If a run OOMs, treat it as a crash — revert and try a smaller version of the idea.
+- **Crashes**: If a run crashes and it's easy to fix (typo, shape mismatch), fix and re-run. If you can't get it working after 2-3 attempts, give up on that idea and move on.
 - **Simplicity criterion**: All else being equal, simpler is better. A small improvement that adds ugly complexity is not worth it. Removing something and getting equal or better results is a great outcome — that's a simplification win. When evaluating whether to keep a change, weigh the complexity cost against the improvement magnitude.
 
 ## Output Format
