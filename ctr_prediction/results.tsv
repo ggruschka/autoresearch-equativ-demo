@@ -5,3 +5,5 @@ d281258	0.6132	0.7242	0.1	discard	DCN-v2 cross+deep emb16 - massive overfitting
 30fc818	0.4595	0.7826	0.1	keep	add LR warmup+cosine decay + grad clipping
 83adb4d	0.4596	0.7823	0.2	discard	torch.compile() - VRAM 2x, no speedup
 11180d7	0.4593	0.7826	0.1	keep	SWA: average weights last 25% training
+59cdfd5	0.4619	0.7790	0.1	discard	LR 3e-4 - too slow
+30387de	0.4591	0.7833	0.1	keep	LR 5e-4 -> 7e-4
