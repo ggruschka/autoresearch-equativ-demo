@@ -7,53 +7,28 @@ Minimize **val_logloss** on the CTR prediction task. Secondary metric: maximize 
 ## The Loop
 
 1. Read `train.py` and understand the current state
-2. Decide on ONE modification (hyperparameter tweak, architecture change, or training improvement)
+2. Decide on a modification — hyperparameter tweaks, architecture changes, training improvements, or combinations thereof. Everything is fair game.
 3. Edit `train.py` and commit: `git add train.py && git commit -m "description of change"`
 4. Run: `uv run train.py > run.log 2>&1`
 5. Extract metrics: `grep "^val_logloss:\|^val_auc:" run.log`
-6. Compare to previous best:
-   - **Improved** (lower val_logloss): Keep the commit. Log to results.tsv.
-   - **Worse or crashed**: `git reset --hard HEAD~1`. Log to results.tsv with status=regressed/crashed.
-7. Repeat from step 1.
+6. If grep output is empty, the run crashed. Run `tail -n 50 run.log` to read the stack trace. If it's a simple fix (typo, missing import), fix and re-run. If the idea is fundamentally broken, skip it.
+7. Compare to previous best:
+   - **Improved** (lower val_logloss): Keep the commit. Log to results.tsv. Update progress.png. Push.
+   - **Worse**: `git reset` back to where you started. Log to results.tsv with status=discard. Update progress.png. Push.
+   - **Crashed**: Log to results.tsv with status=crashed. Update progress.png. Push.
+8. Repeat from step 1.
+
+**NEVER STOP**: Once the experiment loop has begun, do NOT pause to ask the human if you should continue. Do NOT ask "should I keep going?" or "is this a good stopping point?". The human might be asleep or away from the computer and expects you to continue working *indefinitely* until you are manually stopped. You are autonomous. The loop runs until the human interrupts you, period.
+
+**Think harder**: If you run out of ideas, don't give up. Re-read `train.py` and `prepare.py` for new angles. Try combining previous near-misses. Try more radical architectural changes. Do online research — search for papers, blog posts, and state-of-the-art techniques for CTR prediction (e.g. DCN, DeepFM, AutoInt, xDeepFM, Criteo benchmark winners) to inform new experiment ideas.
 
 ## Rules
 
 - **Only modify `train.py`**. Never modify `prepare.py`.
 - **Cannot add dependencies**. Only use what's in pyproject.toml.
-- **TIME_BUDGET is 120 seconds**. Do not change it. Kill runs exceeding 5 minutes.
-- **One change at a time**. Makes it clear what helped.
+- **TIME_BUDGET is 300 seconds**. Do not change it. Kill runs exceeding 10 minutes.
 - **Log everything** to `results.tsv` (tab-separated: commit, val_logloss, val_auc, status, description).
-
-## Domain Hints
-
-Things worth trying (in rough order of expected impact):
-
-### Hyperparameters
-- Embedding dimension (current: 8). Try 16, 32 — larger embeddings capture richer feature interactions
-- Hidden layer sizes and depth. Try [128, 64], [256, 128, 64], etc.
-- Learning rate (current: 1e-3). Try 3e-4, 5e-4, 2e-3
-- Batch size (current: 1024). Try 512, 2048, 4096
-- Dropout (current: 0.1). Try 0.0, 0.2, 0.3
-- Weight decay. Try 1e-4, 1e-6
-
-### Architecture
-- Add batch normalization between layers
-- Try different activations (GELU, SiLU/Swish instead of ReLU)
-- Feature interaction layers (e.g., element-wise products of embeddings)
-- Skip/residual connections for deeper networks
-- Separate numerical feature processing (small MLP before concatenation)
-
-### Training
-- Learning rate scheduling (cosine decay, warmup)
-- Gradient clipping
-- Different optimizers (Adam vs AdamW, try different betas)
-- Label smoothing
-
-### Advanced
-- DeepFM-style: add a factorization machine component alongside the MLP
-- Cross-network (DCN): explicit feature crossing
-- Attention over feature embeddings
-- Per-feature embedding dimensions (larger for high-cardinality features)
+- **Simplicity criterion**: All else being equal, simpler is better. A small improvement that adds ugly complexity is not worth it. Removing something and getting equal or better results is a great outcome — that's a simplification win. When evaluating whether to keep a change, weigh the complexity cost against the improvement magnitude.
 
 ## Output Format
 
