@@ -45,8 +45,8 @@ class CTRModel(nn.Module):
             for cardinality in config.categorical_cardinalities
         ])
 
-        # Input dim = numerical features + all embeddings concatenated
-        input_dim = config.num_numerical + config.num_categorical * EMBEDDING_DIM
+        # Input = numerical + embeddings + pairwise FM interaction
+        input_dim = config.num_numerical + config.num_categorical * EMBEDDING_DIM + EMBEDDING_DIM
 
         # MLP layers
         layers = []
@@ -63,15 +63,16 @@ class CTRModel(nn.Module):
 
     def forward(self, numerical: torch.Tensor, categorical: torch.Tensor) -> torch.Tensor:
         # Embed each categorical feature
-        embedded = [
-            emb(categorical[:, i])
-            for i, emb in enumerate(self.embeddings)
-        ]
-        embedded = torch.cat(embedded, dim=-1)  # (batch, num_cat * emb_dim)
+        emb_list = [emb(categorical[:, i]) for i, emb in enumerate(self.embeddings)]
+        embedded = torch.cat(emb_list, dim=-1)
 
-        # Concatenate with numerical features
-        x = torch.cat([numerical, embedded], dim=-1)
+        # FM pairwise interaction (efficient sum-of-squares trick)
+        emb_stack = torch.stack(emb_list, dim=1)  # (batch, num_cat, emb_dim)
+        sum_emb = emb_stack.sum(dim=1)
+        sq_sum = (emb_stack ** 2).sum(dim=1)
+        fm_inter = 0.5 * (sum_emb ** 2 - sq_sum)  # (batch, emb_dim)
 
+        x = torch.cat([numerical, embedded, fm_inter], dim=-1)
         return self.mlp(x)
 
 
