@@ -36,3 +36,5 @@ d8cd97c	0.4745	0.7671	0.1	discard	Log1p transform on numericals
 71b148a	0.4777	0.7609	0.1	discard	Grad clip 1.0 -> 0.5
 da89a2f	0.4759	0.7651	0.1	discard	Hidden [96, 48]
 1b07e6e	0.4727	0.7679	0.1	keep	Adam instead of AdamW
+fcfc844	0.4731	0.7673	0.1	discard	LR 7e-5 -> 8e-5 with Adam
+1c207f7	0.4700	0.7716	0.1	keep	Dropout 0.3 -> 0.35
