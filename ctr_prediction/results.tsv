@@ -3,3 +3,4 @@ commit	val_logloss	val_auc	memory_gb	status	description
 49c76a0	0.4783	0.7665	0.1	keep	LR=1e-4 BN dropout=0.3 [128,64] emb=10 WD=1e-4 grad_clip
 977ead4	0.4781	0.7633	0.1	discard	Wider [256,128] + LR=5e-5 + dropout=0.5
 cc20fa1	1.8458	0.6849	0.1	discard	DeepFM (FM unstable - loss exploded)
+989e4a4	0.4748	0.7648	0.1	keep	FM interaction as extra MLP input features
