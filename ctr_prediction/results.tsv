@@ -1,2 +1,4 @@
 commit	val_logloss	val_auc	memory_gb	status	description
 e3b3578	0.4624	0.7807	0.1	keep	baseline: MLP [64,32] emb8 lr=1e-3 bs=1024
+d281258	0.6132	0.7242	0.1	discard	DCN-v2 cross+deep emb16 - massive overfitting
+4cfcaba	0.4611	0.7815	0.1	keep	emb16 [128,64] lr=5e-4 dropout=0.2 wd=1e-4
