@@ -84,6 +84,8 @@ class CTRModel(nn.Module):
             for i, emb in enumerate(self.embeddings)
         ]
         cat_embedded = torch.cat(cat_embedded, dim=-1)
+        if self.training:
+            cat_embedded = F.dropout(cat_embedded, p=0.1)
 
         # Piecewise linear embedding of numerical features
         bin_indices = torch.bucketize(numerical, self.bin_boundaries)  # (batch, 13)
