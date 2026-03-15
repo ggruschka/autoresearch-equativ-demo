@@ -18,3 +18,4 @@ c95ea2f	0.4760	0.7634	discard	BS 1024 -> 2048
 e65c0ab	0.4741	0.7663	discard	Hidden [192, 96]
 496d9e1	0.4754	0.7638	discard	FM second-order interactions
 39856ab	0.4736	0.7671	discard	Dropout 0.3 -> 0.2
+2ed6159	0.4782	0.7624	discard	LR 1e-4 -> 5e-5
