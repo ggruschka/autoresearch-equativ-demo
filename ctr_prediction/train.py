@@ -22,12 +22,12 @@ from prepare import load_config, make_dataloader, evaluate, TIME_BUDGET
 # ---------------------------------------------------------------------------
 
 DATASET = "criteo"
-EMBEDDING_DIM = 8
-HIDDEN_DIMS = [64, 32]
-LEARNING_RATE = 1e-3
-DROPOUT = 0.1
+EMBEDDING_DIM = 10
+HIDDEN_DIMS = [128, 64]
+LEARNING_RATE = 1e-4
+DROPOUT = 0.3
 BATCH_SIZE = 1024
-WEIGHT_DECAY = 1e-5
+WEIGHT_DECAY = 1e-4
 
 # ---------------------------------------------------------------------------
 # Model
@@ -53,6 +53,7 @@ class CTRModel(nn.Module):
         prev_dim = input_dim
         for hidden_dim in HIDDEN_DIMS:
             layers.append(nn.Linear(prev_dim, hidden_dim))
+            layers.append(nn.BatchNorm1d(hidden_dim))
             layers.append(nn.ReLU())
             layers.append(nn.Dropout(DROPOUT))
             prev_dim = hidden_dim
@@ -123,6 +124,7 @@ def main():
 
             optimizer.zero_grad()
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
             optimizer.step()
 
             step += 1
