@@ -16,3 +16,4 @@ f3542af	0.4756	0.7636	0.1	discard	Numerical feature transform MLP (13->32)
 ada4ca3	0.4743	0.7659	0.1	discard	BS=2048 + LR=1.5e-4 (linear scaling)
 aab82f6	0.4774	0.7616	0.1	discard	PReLU instead of ReLU
 4ef63be	0.4739	0.7667	0.1	keep	Embedding dropout 0.15
+7379466	0.4774	0.7615	0.1	discard	Bilinear num x cat interaction
