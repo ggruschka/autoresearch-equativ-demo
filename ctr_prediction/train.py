@@ -30,6 +30,7 @@ LEARNING_RATE = 9e-4
 DROPOUT = 0.2
 BATCH_SIZE = 1024
 WEIGHT_DECAY = 1e-4
+NUM_BINS = 32  # bins for numerical feature embedding
 
 # ---------------------------------------------------------------------------
 # Model
@@ -47,8 +48,19 @@ class CTRModel(nn.Module):
             for cardinality in config.categorical_cardinalities
         ])
 
-        # Input dim = numerical features + all embeddings concatenated
-        input_dim = config.num_numerical + config.num_categorical * EMBEDDING_DIM
+        # Numerical feature binning: embed binned numerical features
+        self.num_numerical = config.num_numerical
+        # Bin boundaries: evenly spaced in [-4, 4] for z-scored data
+        boundaries = torch.linspace(-4, 4, NUM_BINS - 1)
+        self.register_buffer('bin_boundaries', boundaries)
+        # One embedding per numerical feature
+        self.num_embeddings = nn.ModuleList([
+            nn.Embedding(NUM_BINS, EMBEDDING_DIM)
+            for _ in range(config.num_numerical)
+        ])
+
+        # Input dim = raw numerical + cat embeddings + numerical embeddings
+        input_dim = config.num_numerical + config.num_categorical * EMBEDDING_DIM + config.num_numerical * EMBEDDING_DIM
 
         # MLP layers
         layers = []
@@ -64,14 +76,22 @@ class CTRModel(nn.Module):
 
     def forward(self, numerical: torch.Tensor, categorical: torch.Tensor) -> torch.Tensor:
         # Embed each categorical feature
-        embedded = [
+        cat_embedded = [
             emb(categorical[:, i])
             for i, emb in enumerate(self.embeddings)
         ]
-        embedded = torch.cat(embedded, dim=-1)  # (batch, num_cat * emb_dim)
+        cat_embedded = torch.cat(cat_embedded, dim=-1)
 
-        # Concatenate with numerical features
-        x = torch.cat([numerical, embedded], dim=-1)
+        # Bin and embed numerical features
+        bin_indices = torch.bucketize(numerical, self.bin_boundaries)  # (batch, 13)
+        num_embedded = [
+            self.num_embeddings[i](bin_indices[:, i])
+            for i in range(self.num_numerical)
+        ]
+        num_embedded = torch.cat(num_embedded, dim=-1)
+
+        # Concatenate: raw numerical + cat embeddings + num embeddings
+        x = torch.cat([numerical, cat_embedded, num_embedded], dim=-1)
 
         return self.mlp(x)
 
