@@ -31,7 +31,7 @@ RAW_DIR = CACHE_DIR / "criteo-raw"
 TIME_BUDGET = 300  # seconds per experiment
 
 # Use first 1M rows of the real Criteo dataset
-NUM_ROWS = 1_000_000
+NUM_ROWS = 5_000_000
 VAL_FRACTION = 0.2
 
 NUM_NUMERICAL = 13
