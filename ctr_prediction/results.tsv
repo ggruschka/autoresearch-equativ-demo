@@ -1,1 +1,2 @@
 commit	val_logloss	val_auc	memory_gb	status	description
+e3b3578	0.4624	0.7807	0.1	keep	baseline: MLP [64,32] emb8 lr=1e-3 bs=1024
