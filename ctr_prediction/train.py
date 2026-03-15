@@ -8,6 +8,8 @@ Run: uv run train.py
 """
 from __future__ import annotations
 
+import copy
+import math
 import sys
 import time
 
@@ -106,9 +108,14 @@ def main():
         if step < warmup_steps:
             return step / warmup_steps
         progress = (step - warmup_steps) / max(1, total_steps_est - warmup_steps)
-        return 0.5 * (1.0 + __import__('math').cos(__import__('math').pi * min(progress, 1.0)))
+        return 0.5 * (1.0 + math.cos(math.pi * min(progress, 1.0)))
 
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
+
+    # SWA: accumulate averaged weights from last 25% of training
+    swa_start_frac = 0.75
+    swa_state = None
+    swa_count = 0
 
     # Training
     t0 = time.time()
@@ -141,12 +148,31 @@ def main():
             scheduler.step()
 
             step += 1
+
+            # SWA: accumulate weights every 100 steps in the last 25% of training
+            elapsed_frac = (time.time() - t0) / TIME_BUDGET
+            if elapsed_frac >= swa_start_frac and step % 100 == 0:
+                if swa_state is None:
+                    swa_state = {k: v.clone() for k, v in model.state_dict().items()}
+                    swa_count = 1
+                else:
+                    for k, v in model.state_dict().items():
+                        swa_state[k] += v
+                    swa_count += 1
+
             if step % 500 == 0:
                 elapsed = time.time() - t0
                 print(f"  step {step:5d} | loss {loss.item():.4f} | {elapsed:.0f}s")
 
         if time.time() - t0 > TIME_BUDGET:
             break
+
+    # Apply SWA averaged weights
+    if swa_state is not None and swa_count > 1:
+        print(f"SWA: averaged {swa_count} checkpoints")
+        for k in swa_state:
+            swa_state[k] /= swa_count
+        model.load_state_dict(swa_state)
 
     training_time = time.time() - t0
 
