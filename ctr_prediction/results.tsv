@@ -20,3 +20,4 @@ aab82f6	0.4774	0.7616	0.1	discard	PReLU instead of ReLU
 1587b2d	0.4774	0.7611	0.1	discard	Remove FM interaction (simplification test - FM helps)
 fffa8e3	0.4794	0.7582	0.1	discard	LR 7e-5 -> 8e-5
 4dd62f3	0.4794	0.7591	0.1	discard	[128,64,32] + dropout=0.35
+6100b7c	0.4775	0.7610	0.1	discard	Emb 10 -> 8
