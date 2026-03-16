@@ -96,6 +96,13 @@ ax.set_ylabel('Validation LogLoss (lower is better)', fontsize=12)
 ax.legend(loc='upper right', fontsize=10)
 ax.grid(True, alpha=0.3)
 
+# Clip y-axis to remove outliers
+all_logloss = [e['val_logloss'] for e in experiments]
+kept_logloss = [e['val_logloss'] for e in kept]
+y_max = max(kept_logloss) + 0.005
+y_min = min(all_logloss) - 0.002
+ax.set_ylim(y_min, y_max)
+
 plt.tight_layout()
 plt.savefig('progress.png', dpi=170, bbox_inches='tight')
 print(f"Saved progress.png ({n_total} experiments, {n_kept} kept)")
