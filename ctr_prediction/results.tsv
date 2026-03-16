@@ -24,3 +24,4 @@ c182cac	0.4535	0.7896	0.1	discard	feature-level dropout 0.05 - worse than elemen
 be13a1e	0.4521	0.7910	0.1	keep	linear skip connection input->output
 2663eea	0.4524	0.7907	0.1	discard	LR 1e-3 with skip
 e10efd5	0.4525	0.7904	0.1	discard	multi-level skip - extra complexity no gain
+2134702	0.4531	0.7900	0.2	discard	AutoInt attention - overhead
