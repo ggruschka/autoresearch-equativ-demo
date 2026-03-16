@@ -22,3 +22,4 @@ f69c79d	0.4534	0.7894	0.1	discard	emb12 + 64 bins
 65e2e4e	0.4527	0.7904	0.1	keep	emb_dim=20 with 48 bins
 c182cac	0.4535	0.7896	0.1	discard	feature-level dropout 0.05 - worse than element dropout
 be13a1e	0.4521	0.7910	0.1	keep	linear skip connection input->output
+2663eea	0.4524	0.7907	0.1	discard	LR 1e-3 with skip
