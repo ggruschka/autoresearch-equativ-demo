@@ -77,6 +77,9 @@ class CTRModel(nn.Module):
 
         self.mlp = nn.Sequential(*layers)
 
+        # Linear skip connection from input to output
+        self.skip = nn.Linear(input_dim, 1)
+
     def forward(self, numerical: torch.Tensor, categorical: torch.Tensor) -> torch.Tensor:
         # Embed each categorical feature
         cat_embedded = [
@@ -113,7 +116,7 @@ class CTRModel(nn.Module):
         # Concatenate: raw numerical + cat embeddings + num embeddings
         x = torch.cat([numerical, cat_embedded, num_embedded], dim=-1)
 
-        return self.mlp(x)
+        return self.mlp(x) + self.skip(x)
 
 
 # ---------------------------------------------------------------------------
